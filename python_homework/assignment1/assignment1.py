@@ -109,25 +109,43 @@ def titleize(text):
 
 
 # Task 9
-def multiply_list(numbers):
-    result = 1
-    for n in numbers:
-        result *= n
+def hangman(secret, guess):
+    result = ""
+    for letter in secret:
+        if letter in guess:
+            result += letter
+        else:
+            result += "_"
     return result
 
+
 # Task 10
-def pig_latin(word):
-    try:
-        vowels = "aeiouAEIOU"
+def pig_latin(sentence):
+    vowels = "aeiou"
+    words = sentence.split()
+    result = []
 
-        if not isinstance(word, str) or len(word) == 0:
-            return "Invalid input."
-
+    for word in words:
+        # Rule 1: starts with vowel
         if word[0] in vowels:
-            return word + "yay"
-        else:
-            return word[1:] + word[0] + "ay"
+            result.append(word + "ay")
 
-    except Exception:
-        return "Invalid input."
+        # Rule 3: starts with "qu"
+        elif word.startswith("qu"):
+            result.append(word[2:] + "quay")
+
+        # Rule 2: starts with consonants
+        else:
+            # move consonant cluster
+            i = 0
+            while i < len(word) and word[i] not in vowels:
+                # treat "qu" as one consonant cluster
+                if word[i:i+2] == "qu":
+                    i += 2
+                    break
+                i += 1
+            result.append(word[i:] + word[:i] + "ay")
+
+    return " ".join(result)
+
 
